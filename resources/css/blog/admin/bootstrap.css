@@ -1,0 +1,58 @@
+@tailwind base;
+
+.container {
+    @apply mx-auto;
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+    cursor: pointer;
+    /*background-color: rgba(229, 231, 235, var(--bg-opacity));*/
+
+}
+body::-webkit-scrollbar-track {
+    background-color: rgba(229, 231, 235, var(--bg-opacity));
+    cursor: pointer;
+    /*background: red;*/
+}
+body::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: #a0aec0;
+    /*outline: 1px solid slategrey;*/
+}
+
+/* ==========================================================================
+  links
+   ========================================================================== */
+a {
+    @apply text-blue-500;
+}
+
+/* ==========================================================================
+  svg
+   ========================================================================== */
+
+svg {
+    pointer-events: none;
+}
+
+/* ==========================================================================
+  labels
+   ========================================================================== */
+
+label {
+    @apply block text-gray-600 text-sm mb-2 font-semibold cursor-pointer;
+}
+
+/* ==========================================================================
+  helpers
+   ========================================================================== */
+.active a {
+    @apply font-semibold;
+}
+
+/* Blocks the scrolling of an element */
+.block-scroll {
+    @apply fixed overflow-hidden w-screen;
+}
+

@@ -2,84 +2,64 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    use \Mcamara\LaravelLocalization\Traits\LoadsTranslatedCachedRoutes;
+
+    /**
+     * The path to the "home" route for your application.
+     *
+     * This is used by Laravel authentication to redirect users after login.
+     *
+     * @var string
+     */
+    public const HOME = '/';
+
+    /**
+     * The controller namespace for the application.
+     *
+     * When present, controller route declarations will automatically be prefixed with this namespace.
+     *
+     * @var string|null
+     */
+    // protected $namespace = 'App\\Http\\Controllers';
+
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
     public function boot()
     {
-        parent::boot();
+        $this->configureRateLimiting();
 
-        $this->registerRouteModelBindings();
-    }
+        $this->routes(function () {
+            Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
 
-    public function map()
-    {
-        Route::mailcoach('mailcoach');
-        Route::mailgunFeedback('mailgun-feedback');
-
-        $this
-            ->mapAuthRoutes()
-            ->mapRedirects()
-            ->mapPackageRoutes()
-            ->mapFrontRoutes();
-    }
-
-    protected function mapAuthRoutes()
-    {
-        Route::middleware('web')->group(base_path('routes/auth.php'));
-
-        return $this;
-    }
-
-    protected function mapFrontRoutes()
-    {
-        Route::middleware(['web', 'cacheResponse'])->group(base_path('routes/web.php'));
-
-        return $this;
-    }
-
-    public function registerRouteModelBindings()
-    {
-        Route::bind('postSlug', function ($slug) {
-            $post = Post::findByIdSlug($slug);
-
-            if (! $post) {
-                abort(404);
-            }
-
-            if (auth()->user()?->email === 'freek@spatie.be') {
-                return $post;
-            }
-
-            if ($post->preview_secret === request()->get('preview_secret')) {
-                return $post;
-            }
-
-            if (! $post->published) {
-                abort(404);
-            }
-
-            return $post;
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
     }
 
-    protected function mapPackageRoutes(): self
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRateLimiting()
     {
-        Route::middleware(['web', 'cacheResponse'])->group(function () {
-            Route::feeds('feed');
-            Route::webhooks('webhook-webmentions', 'webmentions');
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
-
-        return $this;
-    }
-
-    protected function mapRedirects(): self
-    {
-        Route::middleware(['web', 'cacheResponse'])->group(base_path('routes/redirects.php'));
-
-        return $this;
     }
 }

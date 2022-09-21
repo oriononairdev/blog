@@ -13,9 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
-
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,10 +35,15 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'og-images' => [
+        'backups' => [
             'driver' => 'local',
-            'root' => storage_path('og-images'),
-            'url' => '/og-images',
+            'root' => storage_path('app/backups'),
+        ],
+
+        'file-manager' => [
+            'driver' => 'local',
+            'root' => storage_path('app/file-manager'),
+            //'url' => env('APP_URL').'/file-manager',
         ],
 
         'public' => [
@@ -48,6 +51,13 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+        ],
+
+        'media' => [
+            'driver' => 'local',
+            'root' => public_path('media'),
+            'url' => env('APP_URL').'/media',
+            //'visibility' => 'public',
         ],
 
         's3' => [
@@ -58,7 +68,6 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
     ],

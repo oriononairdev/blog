@@ -3,183 +3,147 @@
 namespace App\Models\Presenters;
 
 use App\Models\Post;
-use App\Services\CommonMark\CommonMark;
 use Illuminate\Support\Str;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 
-/** @mixin Post */
 trait PostPresenter
 {
-    public function getExcerptAttribute(): string
+    /**
+     * Summary accessor.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getSummaryAttribute(?string $value): ?string
     {
-        $excerpt = $this->getManualExcerpt() ?? $this->getAutomaticExcerpt();
-
-        $excerpt = str_replace(
-            '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
-            '<div data-lazy="twitter"></div>',
-            $excerpt,
-        );
-
-        $excerpt = CommonMark::convertToHtml($excerpt, false);
-
-        return trim($excerpt);
+        return $value ? app(MarkdownRenderer::class)->toHtml($value) : '';
     }
 
-    public function getPlainTextExcerptAttribute(): string
+    public function getPlainSummaryAttribute(): string
     {
-        return strip_tags($this->excerpt);
+        return strip_tags(trim(preg_replace('/\s+/', ' ', $this->summary)));
     }
 
-    public function getNewsletterExcerptAttribute(): string
+    /**
+     * Summary Markdown accessor.
+     *
+     * @param  string  $value
+     * @return string|null
+     */
+    public function getSummaryMarkdownAttribute(): ?string
     {
-        $excerpt = $this->getAutomaticExcerpt();
-        $excerpt = Str::replaceLast('</p>', '', $excerpt);
-        $excerpt = Str::replaceFirst('<p>', '', $excerpt);
-        $excerpt = Str::before($excerpt, '<blockquote>');
-
-        $excerpt = strip_tags($excerpt);
-
-        return trim($excerpt);
+        return $this->getRawOriginal('summary');
     }
 
-    protected function getManualExcerpt(): ?string
+    /**
+     * @param $value
+     * @return void
+     */
+    public function setSummaryMarkdownAttribute($value): void
     {
-        if (! Str::contains($this->text, '<!--more-->')) {
-            return null;
-        }
-
-        return trim(Str::before($this->text, '<!--more-->'));
+        $this->summary = $value;
     }
 
-    protected function getAutomaticExcerpt(): string
+    /**
+     * Content accessor.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getContentAttribute(string $value): ?string
     {
-        if (! $this->original_content) {
-            return $this->html;
-        }
-
-        $excerpt = $this->html;
-
-        $excerpt = Str::before($excerpt, '<blockquote>');
-
-        $excerpt = strip_tags($excerpt);
-
-        //replace multiple spaces
-        $excerpt = preg_replace("/\s+/", ' ', $excerpt);
-
-        if (strlen($excerpt) == 0) {
-            return '';
-        }
-
-        if (strlen($excerpt) <= 300) {
-            return $excerpt;
-        }
-
-        $ww = wordwrap($excerpt, 300, "\n");
-
-        $excerpt = substr($ww, 0, strpos($ww, "\n")).'…';
-
-        return $excerpt ?? '';
+        return app(MarkdownRenderer::class)->toHtml($value);
     }
 
-    public function getTagsTextAttribute(): string
+    /**
+     * Markdown accessor.
+     *
+     * @return string
+     */
+    public function getMarkdownAttribute(): ?string
     {
-        return $this
-            ->tags
-            ->pluck('name')
-            ->implode(', ');
+        return $this->getRawOriginal('content');
     }
 
-    public function getFormattedTitleAttribute(): string
+    /**
+     * @param $value
+     * @return void
+     */
+    public function setMarkdownAttribute($value): void
     {
-        $prefix = $this->original_content
-            ? '★ '
-            : '';
-
-        return $prefix.$this->title;
+        $this->content = $value;
     }
 
-    public function getEmojiAttribute(): string
+    public function getPlainContentAttribute(): string
     {
-        if ($this->isLink()) {
-            return '🔗';
-        }
-
-        if ($this->isTweet()) {
-            return '🐦';
-        }
-
-        if ($this->isOriginal()) {
-            return '🌟';
-        }
-
-        return '';
+        return strip_tags(trim(preg_replace('/\s+/', ' ', $this->content)));
     }
 
-    public function getFormattedTypeAttribute(): string
+    /**
+     * Get url for the post.
+     *
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): ?string
     {
-        if ($this->isOriginal()) {
-            return 'Original';
-        }
-
-        return ucfirst($this->getType());
+        return route('blog.single', [$this->id ?? 'xx', $this->slug ?? 'new-post']);
     }
 
-    public function getThemeAttribute(): string
+    /**
+     * Get preview url for the post.
+     *
+     * @return string|null
+     */
+    public function getPreviewUrlAttribute(): ?string
     {
-        $tagNames = $this->tags->pluck('name');
-
-        if ($tagNames->contains('laravel')) {
-            return '#f16563';
-        }
-
-        if ($tagNames->contains('php')) {
-            return '#7578ab';
-        }
-
-        if ($tagNames->contains('javascript')) {
-            return '#f7df1e';
-        }
-
-        return '#cbd5e0';
+        return $this->url.'?preview='.$this->preview_secret;
     }
 
-    public function getGradientColorsAttribute(): string
+    /**
+     * Get tags for the post.
+     *
+     *
+     * @return string
+     */
+    public function getAllTagsAttribute(): ?string
     {
-        $tagNames = $this->tags->pluck('name');
+        return $this->tags->pluck('name');
+    }
 
-        if ($tagNames->contains('laravel')) {
-            return 'from-red-400 to-red-700';
-        }
-
-        if ($tagNames->contains('php')) {
-            return 'from-blue-500 to-blue-800';
-        }
-
-        if ($tagNames->contains('javascript')) {
-            return 'from-yellow-400 to-orange-500';
-        }
-
-        return 'from-gray-400 to-gray-700';
+    /**
+     * Get domain from external_url.
+     *
+     *
+     * @return string
+     */
+    public function getDomainAttribute(): ?string
+    {
+        return parse_url($this->external_url, PHP_URL_HOST);
     }
 
     public function getReadingTimeAttribute(): int
     {
-        return (int) ceil(str_word_count(strip_tags($this->text)) / 200);
+        return (int) ceil(str_word_count(strip_tags($this->content)) / 200);
     }
 
-    public function getIsOriginalAttribute(): bool
+    /**
+     * Type lower accessor.
+     *
+     * @return string|null
+     */
+    public function getTypeLowerAttribute(): ?string
     {
-        return $this->type === Post::TYPE_ORIGINAL;
+        return Str::lower($this->type);
     }
 
-    public function getExternalUrlHostAttribute(): string
+    /**
+     * Type lower accessor.
+     *
+     * @return string|null
+     */
+    public function getCategoryNameAttribute(): ?string
     {
-        return parse_url($this->external_url)['host'] ?? '';
-    }
-
-    public function getSeriesTocTitleAttribute(): string
-    {
-        $titleAfterPart = Str::after($this->title, 'part');
-
-        return "Part{$titleAfterPart}";
+        return Str::ucfirst($this->category->name);
     }
 }

@@ -1,0 +1,205 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+@layer base {
+    body::-webkit-scrollbar {
+        width: 4px;
+        cursor: pointer;
+        /*background-color: rgba(229, 231, 235, var(--bg-opacity));*/
+
+    }
+    body::-webkit-scrollbar-track {
+        background-color: rgba(229, 231, 235, var(--bg-opacity));
+        cursor: pointer;
+        /*background: red;*/
+    }
+    body::-webkit-scrollbar-thumb {
+        cursor: pointer;
+        background-color: #a0aec0;
+        /*outline: 1px solid slategrey;*/
+    }
+
+    /* ==========================================================================
+      links
+       ========================================================================== */
+    a {
+        @apply text-blue-500;
+    }
+
+    /* ==========================================================================
+      svg
+       ========================================================================== */
+
+    svg {
+        pointer-events: none;
+    }
+
+    /* ==========================================================================
+      labels
+       ========================================================================== */
+
+    label {
+        @apply block text-gray-600 text-sm mb-2 font-semibold cursor-pointer;
+    }
+
+    /* ==========================================================================
+      helpers
+       ========================================================================== */
+    .active a {
+        @apply font-semibold;
+    }
+
+    /* Blocks the scrolling of an element */
+    .block-scroll {
+        @apply fixed overflow-hidden w-screen;
+    }
+
+    button, .btn-new {
+        @apply font-semibold text-sm uppercase border-0 text-white cursor-pointer;
+        @apply bg-green-500 text-center whitespace-nowrap;
+        @apply tracking-wide align-middle px-4 py-2 rounded-sm;
+    }
+
+    /* Link buttons */
+    /*button:active,
+    .btn:active,
+    button:hover,
+    .btn:hover {
+        @apply no-underline text-white;
+    }*/
+}
+@layer components {
+    .text-input,
+    textarea,
+    input[type="file"] {
+        @apply appearance-none bg-white block m-auto w-full py-2 px-3 border border-gray-400 leading-tight rounded-sm;
+
+        background-image: none;
+        background-clip: padding-box;
+        box-shadow: none;
+    }
+
+    .text-input:focus,
+    textarea:focus,
+    input[type="file"]:focus {
+        outline-width: 2px;
+        outline-style: solid;
+        outline-color: Highlight;
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 0) {
+        .text-input:focus,
+        textarea:focus,
+        input[type="file"]:focus {
+            outline: -webkit-focus-ring-color auto 3px;
+        }
+    }
+
+    .markup > *:not(pre) {
+        @apply break-words;
+    }
+
+    .markup > *:not(:last-child) {
+        @apply mb-6;
+    }
+
+    .link,
+    .markup :not(.no-markup) a:not(.permalink) {
+        @apply text-blue-700 underline;
+    }
+
+    .markup .permalink {
+        @apply inline-block ml-1 text-gray-400;
+    }
+
+    .markup h1 {
+        @apply text-3xl font-extrabold leading-tight;
+    }
+
+    .markup h2 {
+        @apply text-2xl font-bold leading-tight mt-12;
+    }
+
+    .h3,
+    .markup h3 {
+        @apply font-semibold leading-tight mt-12;
+    }
+
+    .markup ul,
+    .markup ol {
+        list-style-position: inside;
+    }
+
+    .markup ul {
+        list-style-type: disc;
+    }
+
+    .markup ol {
+        list-style-type: decimal;
+    }
+
+    .markup img {
+        @apply block;
+    }
+
+    .markup blockquote {
+        @apply -mx-4 p-4 bg-indigo-100 relative;
+        font-size: 0.925em;
+    }
+
+    @screen sm {
+        .markup blockquote {
+            @apply mx-0 p-6 border-b-5 border-indigo-200;
+        }
+    }
+
+    @screen md {
+        .markup blockquote {
+            @apply p-8;
+        }
+    }
+
+    .markup blockquote:after {
+        position: absolute;
+        left: -12px;
+        top: -50px;
+        content: '“';
+        font-size: 100px;
+    }
+
+    .markup code {
+        @apply font-mono;
+    }
+
+    .markup :not(pre) > code {
+        @apply p-1 bg-gray-100 border-b-2 border-gray-200;
+        font-size: 0.8em;
+    }
+
+    .markup pre {
+        @apply bg-gray-100 !important;
+        @apply -mx-4 p-4 overflow-x-auto;
+        font-size: 0.75em;
+        line-height: 2.25;
+    }
+
+    @screen sm {
+        .markup pre {
+            @apply mx-0 p-6 border-b-5 border-gray-200;
+        }
+    }
+
+    @screen md {
+        .markup pre {
+            @apply p-8;
+        }
+    }
+
+    .markup iframe {
+        @apply w-full;
+    }
+}
+@layer utilities {
+
+}
+

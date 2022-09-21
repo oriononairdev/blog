@@ -2,7 +2,7 @@
 
 namespace App\Services\Webmentions;
 
-use App\Models\Post;
+use App\Models\BlogPost;
 use App\Models\Webmention;
 use Illuminate\Support\Arr;
 use Spatie\Url\Url;
@@ -27,7 +27,7 @@ class ProcessWebhookJob extends SpatieProcessWebhookJob
         }
 
         Webmention::create([
-            'post_id' => $post->id,
+            'blog_post_id' => $post->id,
             'type' => $type,
             'webmention_id' => Arr::get($payload, 'post.wm-id'),
             'author_name' => Arr::get($payload, 'post.author.name'),
@@ -62,7 +62,7 @@ class ProcessWebhookJob extends SpatieProcessWebhookJob
         return $types[$wmProperty];
     }
 
-    private function getPost(array $payload): ?Post
+    private function getPost(array $payload): ?BlogPost
     {
         $url = Arr::get($payload, 'post.wm-target');
 
@@ -74,6 +74,6 @@ class ProcessWebhookJob extends SpatieProcessWebhookJob
 
         [$postId] = explode('-', $postIdSlug);
 
-        return Post::find($postId);
+        return BlogPost::find($postId);
     }
 }

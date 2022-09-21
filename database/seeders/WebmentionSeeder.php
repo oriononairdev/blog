@@ -2,17 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
+use App\Models\BlogPost;
 use App\Models\Webmention;
 use Illuminate\Database\Seeder;
 
 class WebmentionSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
-        Post::each(function (Post $post) {
-            Webmention::factory()->times(10)->create([
-                'post_id' => $post->id,
+        BlogPost::each(function (BlogPost $post) {
+            Webmention::factory()->times(4)->create([
+                'blog_post_id' => $post->id,
             ]);
         });
     }

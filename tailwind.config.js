@@ -1,30 +1,20 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
         './resources/**/*.blade.php',
-        './app/*.php',
     ],
-    plugins: [require('@tailwindcss/forms')],
     theme: {
         fontFamily: {
             sans: [
-                'Whitney SSm A',
-                'Whitney SSm B',
-                '-apple-system',
-                'BlinkMacSystemFont',
-                'Segoe UI',
-                'Roboto',
-                'Helvetica Neue',
                 'Arial',
-                'Noto Sans',
-                'sans-serif',
-                'Apple Color Emoji',
-                'Segoe UI Emoji',
-                'Segoe UI Symbol',
-                'Noto Color Emoji',
+                'Helvetica',
+                'Verdana',
+                'Garamond',
             ],
             mono: [
-                'Operator Mono SSm A',
-                'Operator Mono SSm B',
                 'Monaco',
                 'Consolas',
                 'Liberation Mono',
@@ -34,6 +24,7 @@ module.exports = {
         },
         extend: {
             borderWidth: {
+                1: '1px',
                 3: '3px',
                 5: '5px',
             },
@@ -54,12 +45,18 @@ module.exports = {
             rotate: {
                 '-5': '-5deg',
             },
+            colors: {
+                "white-50": "hsla(0, 0%, 100%, 0.5)",
+                "white-90": "hsla(0, 0%, 100%, 0.97)",
+                orange: colors.orange,
+            },
+            animation: {
+                'spin-slow': 'spin 15s linear infinite',
+            }
         },
-    },
-    variants: {
-        borderColor: ['focus-within', 'hover', 'focus'],
-        extend: {
-            fontWeight: ['hover', 'focus']
+        container: {
+            center: true,
         }
     },
+    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography'),],
 };

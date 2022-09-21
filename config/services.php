@@ -14,27 +14,6 @@ return [
     |
     */
 
-    'twitter' => [
-        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
-        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
-        'access_token' => env('TWITTER_ACCESS_TOKEN'),
-        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
-    ],
-    'webmentions' => [
-        'webhook_secret' => env('WEBMENTIONS_WEBHOOK_SECRET'),
-    ],
-
-    'oh_dear' => [
-        'backup_run_ping_endpoint' => env('OH_DEAR_BACKUP_PING_ENDPOINT'),
-        'publish_scheduled_posts_ping_endpoint' => env('OH_DEAR_PUBLISH_SCHEDULED_POSTS_PING_ENDPOINT'),
-    ],
-
-    'stripe' => [
-        'model' => App\Models\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
-    ],
-
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
@@ -55,12 +34,9 @@ return [
         'salt' => env('MEDIA_LIBRARY_PATH_GENERATOR_SALT'),
     ],
 
-    'flare' => [
-        'api_token' => env('FLARE_API_KEY'),
-        'project_id' => 271,
-    ],
-
-    'mailcoach' => [
-        'api_key' => env('MAILCOACH_API_KEY'),
+    'matomo' => [
+        'token' => env('MATOMO_TOKEN'),
+        'url' => env('MATOMO_URL'),
+        'page_id' => env('MATOMO_PAGE_ID'),
     ],
 ];

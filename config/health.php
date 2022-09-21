@@ -8,7 +8,23 @@ return [
      * can use multiple stores at the same time.
      */
     'result_stores' => [
-        Spatie\Health\ResultStores\InMemoryHealthResultStore::class,
+        /*Spatie\Health\ResultStores\EloquentHealthResultStore::class => [
+            'model' => Spatie\Health\Models\HealthCheckResultHistoryItem::class,
+            'keep_history_for_days' => 5,
+        ],*/
+
+        /*
+        Spatie\Health\ResultStores\CacheHealthResultStore::class => [
+            'store' => 'file',
+        ],
+
+        Spatie\Health\ResultStores\InMemoryHealthResultStore::class, */
+
+        Spatie\Health\ResultStores\JsonFileHealthResultStore::class => [
+            'disk' => 'local',
+            'path' => 'health.json',
+        ],
+
     ],
 
     /*
@@ -19,7 +35,7 @@ return [
         /*
          * Notifications will only get sent if this option is set to `true`.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         'notifications' => [
             Spatie\Health\Notifications\CheckFailedNotification::class => ['mail'],
@@ -41,7 +57,7 @@ return [
         'throttle_notifications_for_minutes' => 60,
 
         'mail' => [
-            'to' => 'your@example.com',
+            'to' => 'z@mucahitugur.com',
 
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
@@ -50,7 +66,7 @@ return [
         ],
 
         'slack' => [
-            'webhook_url' => '',
+            'webhook_url' => config('logging.channels.slack.url', ''),
 
             /*
              * If this is set to null the default channel of the webhook will be used.
@@ -69,7 +85,7 @@ return [
      * Oh Dear, you can also have access to more advanced notification options.
      */
     'oh_dear_endpoint' => [
-        'enabled' => true,
+        'enabled' => false,
 
         /*
          * When this option is enabled, the checks will run before sending a response.
@@ -87,4 +103,12 @@ return [
          */
         'url' => '/oh-dear-health-check-results',
     ],
+
+    /*
+     * You can set a theme for the local results page
+     *
+     * - light: light mode
+     * - dark: dark mode
+     */
+    'theme' => 'dark',
 ];

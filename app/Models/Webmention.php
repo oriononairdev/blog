@@ -17,6 +17,13 @@ class Webmention extends Model
 
     const TYPE_RETWEET = 'retweet';
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
     public static function boot()
     {
         parent::boot();
@@ -28,7 +35,7 @@ class Webmention extends Model
 
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(BlogPost::class);
     }
 
     public function scopeType(Builder $builder, string $type): void

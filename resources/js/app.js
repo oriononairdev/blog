@@ -1,41 +1,8 @@
-import '../css/app.css';
+require('./bootstrap');
 
-Array.from(document.querySelectorAll('[data-lazy]')).forEach(lazy);
+import Alpine from 'alpinejs';
 
-function lazy(element) {
-    function observerCallback(entries, observer) {
-        entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-                return;
-            }
+window.Alpine = Alpine;
 
-            if (element.dataset.lazy === 'twitter') {
-                loadTwitter();
-                observer.disconnect();
-                return;
-            }
+Alpine.start();
 
-            const template = element.querySelector('template');
-            const contents = document.importNode(template.content, true);
-            element.appendChild(contents);
-            observer.disconnect();
-        });
-    }
-
-    const observer = new IntersectionObserver(observerCallback, { rootMargin: '500px' });
-
-    observer.observe(element);
-}
-
-let twitterLoaded = false;
-
-function loadTwitter() {
-    if (twitterLoaded) {
-        return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://platform.twitter.com/widgets.js';
-
-    document.body.appendChild(script);
-}

@@ -1,32 +1,37 @@
+## [Personal Blog](https://blog.mucahitugur.com)
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+This fork of [freek.dev](https://github.com/spatie/freek.dev) includes my personal customizations as well as a personal finance tracker in nova and an admin interface which makes it possible to create, edit and delete blog posts in addition to nova.
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/freekdev.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/freek.dev)
+## Experience
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+This blog project which was my first laravel project helped me to experiment, learn and practice on notions such as:
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- User authorization with [Laravel Forify](https://laravel.com/docs/9.x/fortify)
 
-## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for details.
+- Building blade views and layouts using [Template Inheritance](https://laravel.com/docs/9.x/blade#layouts-using-template-inheritance)
 
-## Security
 
-If you've found a bug regarding security please mail [security@spatie.be](mailto:security@spatie.be) instead of using the issue tracker.
+- Building administration panels with [Laravel Nova](https://nova.laravel.com/)
 
-## Postcardware
 
-You're free to use this code (it's [MIT-licensed](LICENSE.md)). If you use it to set up your own blog we would highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
+- Debugging with [Laravel Telescope](https://laravel.com/docs/9.x/telescope)
 
-Our address is: Spatie, Kruikstraat 22, 2018 Antwerp, Belgium.
 
-All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
+- Customizing a markdown editor with [EasyMDE](https://github.com/Ionaru/easy-markdown-editor)
 
-## Credits
 
-- [Freek Van der Herten](https://github.com/freekmurze)
-- [All Contributors](../../contributors)
+- Importing excel files with [Laravel Excel](https://github.com/SpartnerNL/Laravel-Excel)
+
+
+- Serving different locales with [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
+
+
+- And many others with many great spatie packages including but not limited to:
+  - [spatie/laravel-backup](https://github.com/spatie/laravel-backup)
+  - [spatie/laravel-medialibrary](https://github.com/spatie/laravel-medialibrary)
+  - [spatie/laravel-tags](https://github.com/spatie/laravel-tags)
+
 
 ## License
 

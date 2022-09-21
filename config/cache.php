@@ -54,9 +54,9 @@ return [
             'path' => storage_path('framework/cache/data'),
         ],
 
-        'markdown' => [
+        'file-schedule-check' => [
             'driver' => 'file',
-            'path' => storage_path('framework/cache/markdown'),
+            'path' => storage_path('framework/cache/schedule-check'),
         ],
 
         'memcached' => [

@@ -1,0 +1,78 @@
+/* ==========================================================================
+  editor.css
+   ========================================================================== */
+
+/* Markdown editor customizations */
+.editor-toolbar {
+  @apply bg-gray-200;
+}
+
+#local .editor-toolbar {
+    @apply fixed box-border;
+    z-index: 13;
+    top: 0;
+    padding: inherit;
+}
+
+.editor-toolbar button {
+  @apply text-gray-800;
+}
+
+.h1-text {
+    width: unset;
+}
+
+.h1-text:before {
+    content: 'H1';
+}
+
+.h2-text {
+    width: unset;
+}
+
+.h2-text:before {
+    content: 'H2';
+}
+
+.h3-text {
+    width: unset;
+}
+
+.h3-text:before {
+    content: 'H3';
+}
+
+.h4-text {
+    width: unset;
+}
+
+.h4-text:before {
+    content: 'H4';
+}
+
+.editor-toolbar .easymde-dropdown {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    border: 0px;
+}
+
+.editor-preview-full img {
+    @apply w-1/2;
+}
+
+.editor-preview-full::-webkit-scrollbar {
+    width: 3px;
+    @apply rounded-md;
+    cursor: pointer;
+
+}
+
+.editor-preview-full::-webkit-scrollbar-track {
+    background-color: rgba(229, 231, 235, var(--bg-opacity));
+    cursor: pointer;
+}
+.editor-preview-full::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    @apply bg-gray-300;
+}

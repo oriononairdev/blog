@@ -14,6 +14,6 @@ class WebmentionWebhookSignatureValidator implements SignatureValidator
             return false;
         }
 
-        return $request->secret === config('services.webmentions.webhook_secret');
+        return $request->secret === config('webhook-client.configs')[0]['signing_secret'];
     }
 }

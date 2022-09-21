@@ -4,33 +4,42 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Comments\Models\Concerns\InteractsWithComments;
-use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
 
-class User extends Authenticatable implements CanComment, MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory;
-    use InteractsWithComments;
-    use Notifiable;
+    use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'twitter_handle',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
-        'admin' => 'boolean',
+        'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
     ];
-
-    public function links(): HasMany
-    {
-        return $this->hasMany(Link::class);
-    }
-
-    public function submittedPosts(): HasMany
-    {
-        return $this->hasMany(Post::class, 'submitted_by_user_id');
-    }
 }

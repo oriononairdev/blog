@@ -1,0 +1,18 @@
+@import '~xterm/css/xterm.css';
+.xterm {
+    @apply overflow-hidden;
+}
+.xterm .xterm-screen {
+    position: relative;
+    @apply w-1/2 max-w-xl !important;
+}
+.xterm .xterm-screen canvas {
+    @apply border-8 border-black rounded-md w-auto max-w-xl !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.xterm textarea {
+    background-color: black;
+}
